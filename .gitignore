@@ -1,0 +1,12 @@
+# Compiled executables
+*.out
+*.exe
+*.dSYM/
+
+# Exclude executables without extension (compiled C++ files)
+Problem Set 1/Problem 1
+Problem Set 1/Problem 2
+Problem Set 1/Problem 3
+
+# macOS
+.DS_Store

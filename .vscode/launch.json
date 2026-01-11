@@ -1,0 +1,59 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        // C/C++ Configuration
+        {
+            "name": "C/C++: Run",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${fileDirname}/${fileBasenameNoExtension}",
+            "args": [],
+            "cwd": "${fileDirname}",
+            "terminal": "integrated",
+            "preLaunchTask": "C/C++: clang++ build active file"
+        },
+        // Go Configuration
+        {
+            "name": "Go: Run",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        // Python Configuration
+        {
+            "name": "Python: Run ",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        // Java Configuration
+        {
+            "name": "Java: Run ",
+            "type": "java",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        // C# Configuration
+        {
+            "name": "C#: Run ",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/bin/Debug/net8.0/${workspaceFolderBasename}.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        },
+        // Node.js/JavaScript Configuration
+        {
+            "name": "Node.js: Run Active File",
+            "type": "node",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        }
+    ]
+}
