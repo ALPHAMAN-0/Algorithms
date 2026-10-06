@@ -1,17 +1,17 @@
 #include <iostream>
 using namespace std;
 
-int queue[1000];
+int bfsQueue[1000];
 int front = 0, rear = 0;
 
 void enqueue(int x)
 {
-    queue[rear++] = x;
+    bfsQueue[rear++] = x;
 }
 
 int dequeue()
 {
-    return queue[front++];
+    return bfsQueue[front++];
 }
 
 bool isEmpty()

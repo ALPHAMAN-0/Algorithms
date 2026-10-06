@@ -2,15 +2,15 @@
 #include <string>
 using namespace std;
 
-int stack[1000];
+int dfsStack[1000];
 int top = -1;
 void push(int x)
 {
-    stack[++top] = x;
+    dfsStack[++top] = x;
 }
 int pop()
 {
-    return stack[top--];
+    return dfsStack[top--];
 }
 bool isEmpty()
 {
@@ -81,7 +81,7 @@ void dfsVisit(int start)
 
     while (!isEmpty())
     {
-        int u = stack[top];
+        int u = dfsStack[top];
 
         if (neighborIndex[u] < adjSize[u])
         {
