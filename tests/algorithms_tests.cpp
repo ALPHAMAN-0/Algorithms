@@ -202,6 +202,29 @@ static void testRangeSumsAgainstPlainLoop() {
     CHECK(suffixMismatches == 0);
 }
 
+// the three programs take no input: run them and look for the results they
+// are meant to print
+static void testSumAlgorithmPrograms() {
+    Run kadane = runProgram(kadans::programMain, "");
+    CHECK(kadane.code == 0);
+    CHECK(contains(kadane.out, "Maximum Subarray Sum: 6\n"));
+    CHECK(contains(kadane.out, "Subarray Indices: [3, 6]\n"));
+    CHECK(contains(kadane.out, "Maximum Subarray: [4, -1, 2, 1]\n"));
+    CHECK(contains(kadane.out, "Maximum Subarray Sum: -1 (least negative)\n"));
+
+    Run prefix = runProgram(prefixSum::programMain, "");
+    CHECK(prefix.code == 0);
+    CHECK(contains(prefix.out, "Prefix Sum Array: 2 6 12 20 30 \n"));
+    CHECK(contains(prefix.out, "Sum from index 1 to 3: 18\n"));
+
+    Run suffix = runProgram(suffixSum::programMain, "");
+    CHECK(suffix.code == 0);
+    CHECK(contains(suffix.out, "Suffix Sum Array: 30 28 24 18 10 \n"));
+    CHECK(contains(suffix.out, "Result: 12\n"));
+    CHECK(contains(suffix.out, "Result: 18\n"));
+    CHECK(contains(suffix.out, "Result: 24\n"));
+}
+
 // ------------------------------------------------ Problem 1: LCS
 
 static void testLcs() {
@@ -250,16 +273,23 @@ static void testBfsRefusesInputThatDoesNotFit() {
     CHECK(tooManyVertices.code == 1);
     CHECK(contains(tooManyVertices.out, "Invalid input"));
 
+    CHECK(runBfs("-1\n0\n1\n").code == 1);        // negative number of vertices
     CHECK(runBfs("3\n1\n500 1\n1\n").code == 1);  // vertex number too large
-    CHECK(runBfs("3\n1\n1 -7\n1\n").code == 1);   // negative vertex number
+    CHECK(runBfs("3\n1\n1 500\n1\n").code == 1);
+    CHECK(runBfs("3\n1\n-7 1\n1\n").code == 1);   // negative vertex number
+    CHECK(runBfs("3\n1\n1 -7\n1\n").code == 1);
     CHECK(runBfs("3\n1\n1 2\n5000\n").code == 1); // source outside the arrays
-    CHECK(runBfs("3\n2\n1 2\n").code == 1);       // input ends too early
+    CHECK(runBfs("3\n1\n1 2\n-1\n").code == 1);
+    CHECK(runBfs("3\n1\n1 2\n").code == 1);       // input ends before the source
+    CHECK(runBfs("3\n2\n1 2\n").code == 1);       // input ends before the last edge
     CHECK(runBfs("abc\n").code == 1);             // not a number
     CHECK(runBfs("3\nabc\n").code == 1);
 
     // a row of adj[][] holds 100 neighbours: exactly 100 is fine, 101 is not
     CHECK(runBfs("3\n100\n" + repeatLine("1 2", 100) + "1\n").code == 0);
     CHECK(runBfs("3\n101\n" + repeatLine("1 2", 101) + "1\n").code == 1);
+    // the same when only the second vertex of the edge is full
+    CHECK(runBfs("4\n101\n" + repeatLine("1 2", 50) + repeatLine("3 2", 50) + "4 2\n1\n").code == 1);
 
     // a self loop takes two slots of the same row
     CHECK(runBfs("3\n50\n" + repeatLine("1 1", 50) + "1\n").code == 0);
@@ -300,8 +330,11 @@ static void testDfsRefusesInputThatDoesNotFit() {
     CHECK(tooManyVertices.code == 1);
     CHECK(contains(tooManyVertices.out, "Invalid input"));
 
+    CHECK(runDfs("-1\n0\n").code == 1);       // negative number of vertices
     CHECK(runDfs("3\n1\n1 400\n").code == 1); // vertex number too large
+    CHECK(runDfs("3\n1\n400 1\n").code == 1);
     CHECK(runDfs("3\n1\n-3 1\n").code == 1);  // negative vertex number
+    CHECK(runDfs("3\n1\n1 -3\n").code == 1);
     CHECK(runDfs("3\n2\n1 2\n").code == 1);   // input ends too early
     CHECK(runDfs("x\n").code == 1);           // not a number
     CHECK(runDfs("3\nx\n").code == 1);
@@ -324,6 +357,7 @@ int main() {
     testPrefixSum();
     testSuffixSum();
     testRangeSumsAgainstPlainLoop();
+    testSumAlgorithmPrograms();
     testLcs();
     testBfs();
     testBfsRefusesInputThatDoesNotFit();
