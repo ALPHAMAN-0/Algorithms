@@ -132,14 +132,36 @@ int main()
 
     cout << "Number of vertex: ";
     cin >> vertices;
+    // color[], discovery[], finish[] and adj[][] have 100 slots, so only vertex numbers 0..99 fit
+    if (!cin || vertices < 0 || vertices >= 100)
+    {
+        cout << "Invalid input: the number of vertices must be between 0 and 99." << endl;
+        return 1;
+    }
 
     cout << "Number of edges: ";
     cin >> edges;
+    // edgeFrom[], edgeTo[] and edgeType[] have 1000 slots
+    if (!cin || edges > 1000)
+    {
+        cout << "Invalid input: the number of edges must be a number, at most 1000." << endl;
+        return 1;
+    }
 
     for (int i = 0; i < edges; i++)
     {
         int u, v;
         cin >> u >> v;
+        if (!cin || u < 0 || u >= 100 || v < 0 || v >= 100)
+        {
+            cout << "Invalid edge: vertex numbers must be between 0 and 99." << endl;
+            return 1;
+        }
+        if (adjSize[u] >= 100)
+        {
+            cout << "Invalid edge: a vertex cannot have more than 100 outgoing edges." << endl;
+            return 1;
+        }
         addEdge(u, v);
     }
 
