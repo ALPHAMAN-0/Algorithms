@@ -9,12 +9,10 @@ This project is part of the **ALPHAMAN-0** portfolio. C++ algorithm and data-str
 ## Architecture / How it Works
 
 ```mermaid
-flowchart LR
-    A[User] --> B[Algorithms]
-    B --> C{Logic}
-    C --> D[(Data)]
-    C --> E[Output]
-    D --> C
+flowchart TD
+    Problem_Set_1["Problem_Set_1"]
+    SUM_Algorithms["SUM_Algorithms"]
+    VSCode_Config["VSCode_Config"]
 ```
 
 ## Tech Stack
