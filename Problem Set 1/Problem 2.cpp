@@ -1,17 +1,17 @@
 #include <iostream>
 using namespace std;
 
-int queue[1000];
+int bfsQueue[1000];
 int front = 0, rear = 0;
 
 void enqueue(int x)
 {
-    queue[rear++] = x;
+    bfsQueue[rear++] = x;
 }
 
 int dequeue()
 {
-    return queue[front++];
+    return bfsQueue[front++];
 }
 
 bool isEmpty()
@@ -61,20 +61,49 @@ int main()
 
     cout << "Number of Vertex: ";
     cin >> vertices;
+    // dist[], adj[][] and adjSize[] have 100 slots, so only vertex numbers 0..99 fit
+    if (!cin || vertices < 0 || vertices >= 100)
+    {
+        cout << "Invalid input: the number of vertices must be between 0 and 99." << endl;
+        return 1;
+    }
 
     cout << "Number of Edges: ";
     cin >> edges;
+    if (!cin)
+    {
+        cout << "Invalid input: the number of edges must be a number." << endl;
+        return 1;
+    }
 
     for (int i = 0; i < edges; i++)
     {
         int u, v;
         cin >> u >> v;
+        if (!cin || u < 0 || u >= 100 || v < 0 || v >= 100)
+        {
+            cout << "Invalid edge: vertex numbers must be between 0 and 99." << endl;
+            return 1;
+        }
+
+        // addEdge() stores a self loop twice in the same row of adj[][]
+        int slots = (u == v) ? 2 : 1;
+        if (adjSize[u] + slots > 100 || adjSize[v] + slots > 100)
+        {
+            cout << "Invalid edge: a vertex cannot have more than 100 neighbours." << endl;
+            return 1;
+        }
         addEdge(u, v);
     }
 
     int source;
     cout << "Source Vertex: ";
     cin >> source;
+    if (!cin || source < 0 || source >= 100)
+    {
+        cout << "Invalid input: the source vertex must be between 0 and 99." << endl;
+        return 1;
+    }
 
     bfs(source, vertices);
 
